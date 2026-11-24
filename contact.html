@@ -1,23 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Register - Kilele Language School</title>
+  <title>Kilele Registration</title>
 </head>
+
 <body>
 
-  <h1>Register Your Interest</h1>
+  <h1>Kilele Language School</h1>
+
+  <h2>Register Your Interest</h2>
 
   <form id="f">
-    <input name="name"
-           placeholder="Your name"
-           required>
 
-    <input name="email"
-           type="email"
-           placeholder="Email"
-           required>
+    <input
+      name="name"
+      placeholder="Your name"
+      required
+    >
+
+    <input
+      name="email"
+      type="email"
+      placeholder="Your email"
+      required
+    >
 
     <select name="language">
       <option>English</option>
@@ -26,30 +34,53 @@
     </select>
 
     <button type="submit">Send</button>
+
   </form>
 
+  <p id="message"></p>
+
   <script>
-    document.getElementById('f')
-      .addEventListener('submit', function(e) {
+
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxRNnW-BaEQ-vE1MQCRfQgDNdR4LY9pVKE6BBOndxgDlp81noB8_wrjt9v2IfRpN_XE/exec";
+
+    document.getElementById("f")
+      .addEventListener("submit", function(e) {
 
         e.preventDefault();
 
-        fetch('PASTE_WEB_APP_URL', {
-          method: 'POST',
-          mode: 'no-cors',
-          body: new URLSearchParams(
-            new FormData(e.target)
-          )
+        const form = e.target;
+        const message = document.getElementById("message");
+
+        const data = new URLSearchParams(
+          new FormData(form)
+        );
+
+        message.textContent = "Sending...";
+
+        fetch(SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          body: data
         })
         .then(function() {
-          alert('Thanks! We will be in touch.');
-          e.target.reset();
+
+          message.textContent =
+            "Thank you! We will be in touch.";
+
+          form.reset();
+
         })
-        .catch(function() {
-          alert('Something went wrong.');
+        .catch(function(error) {
+
+          message.textContent =
+            "Error sending the form.";
+
+          console.error(error);
+
         });
 
       });
+
   </script>
 
 </body>
